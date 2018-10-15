@@ -15,7 +15,7 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 
 
 ## PART II: WAHLZEIT SETUP
-
+ 
 ### Set-up development for Wahlzeit
 
   1. Install **Java JDK**¹ (version 8 or higher)
