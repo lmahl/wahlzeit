@@ -123,6 +123,10 @@ public class Photo extends DataObject {
 	protected String ending = "jpg";
 	
 	/**
+	 * Location, where the motive depicted in the picture is
+	 */
+	protected Location location = new Location(new Coordinate(0,0,0));
+	/**
 	 *
 	 */
 	//TODO: change it to a single long
@@ -403,6 +407,25 @@ public class Photo extends DataObject {
 	public void setEnding(String ending) {
 		this.ending = ending;
 	}
+
+	/**
+	 * @methodtype get
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+	/**
+	 * @methodtype set
+	 */
+	public void Loction(Location location) {
+		this.location = location;
+	}
+
+	/**
+	 * @methodtype query
+	 */
+	public boolean hasLocation() {return this.location != null;}
 
 	/**
 	 * @methodtype boolean query
