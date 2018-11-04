@@ -18,7 +18,7 @@ import org.junit.Test;
 public class CoordinateTest {
 
 	@Test
-	public void TestCoordinateInitialization() {
+	public void testCoordinateInitialization() {
 		Coordinate coordinate = new Coordinate(3.4, 4.5, 5.6);
 		assert(coordinate.getPosition().length == 3);
 		assert(coordinate.getXPosition() == 3.4);
@@ -30,7 +30,7 @@ public class CoordinateTest {
 	}
 
 	@Test
-	public void TestCoordinateEquals() {
+	public void testCoordinateEquals() {
 		Coordinate origin = new Coordinate(0,0,0);
 		Coordinate originPointer = origin;
 		Coordinate originCopy = new Coordinate(origin.getXPosition(), origin.getYPosition(), origin.getZPosition());
@@ -50,7 +50,7 @@ public class CoordinateTest {
 	}
 
 	@Test
-	public void TestCoordinateDistance() {
+	public void testCoordinateDistance() {
 		Coordinate origin = new Coordinate(0,0,0);
 		Coordinate originPointer = origin;
 		Coordinate second = new Coordinate(3,4,5);
