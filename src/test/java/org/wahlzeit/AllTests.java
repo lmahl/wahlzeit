@@ -1,5 +1,5 @@
 /**
- * EmailServiceTestSuite
+ * AllTests
  *
  * Version: 1.0
  *
@@ -24,7 +24,9 @@ import org.wahlzeit.utils.VersionTest;
 @Suite.SuiteClasses({TellFriendTest.class, DatastoreAdapterTest.class,
         AccessRightsTest.class, CoordinateTest.class, FlagReasonTest.class, GenderTest.class, GuestTest.class,
         LocationTest.class, PhotoFilterTest.class, TagsTest.class, UserStatusTest.class, ValueTest.class,
-        EmailServiceTestSuite.class, LogBuilderTest.class, StringUtilTest.class, VersionTest.class})
+        EmailServiceTestSuite.class, LogBuilderTest.class, StringUtilTest.class, VersionTest.class, StickerTest.class,
+        StickerPhotoTest.class, StickerPhotoManagerTest.class, StickerPhotoFactoryTest.class,
+        SphericCoordinateTest.class, CartesianCoordinateTest.class, CoordinateTest.class})
 public class AllTests {
 
 }

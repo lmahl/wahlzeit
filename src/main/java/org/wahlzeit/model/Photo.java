@@ -125,7 +125,7 @@ public class Photo extends DataObject {
 	/**
 	 * Location, where the motive depicted in the picture is
 	 */
-	protected Location location = new Location(new Coordinate(0,0,0));
+	protected Location location = new Location(new CartesianCoordinate(0,0,0));
 	/**
 	 *
 	 */

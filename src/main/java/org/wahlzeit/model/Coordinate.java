@@ -3,61 +3,56 @@
  *
  * Version: 1.0
  *
- * Date: 28.10.2018
+ * Date: 18.11.2018
  *
- * License: AGPLcv3
+ * License: AGPLv3
  */
 
 package org.wahlzeit.model;
 
 /**
- * Class that represents a single three dimensional cartesian coordinate
+ * Interface to represent a coordinate in space
  */
-public class Coordinate {
-	private double xPosition = 0;
-	private double yPosition= 0;
-	private double zPosition = 0;
+public interface Coordinate {
 
-	public Coordinate(double xPosition, double yPosition, double zPosition){
-		this.xPosition = xPosition;
-		this.yPosition = yPosition;
-		this.zPosition = zPosition;
-	}
+	/**
+	 * @methodtype conversion method
+	 * @return cartesian representation of coordinate
+	 */
+	CartesianCoordinate asCartesianCoordinate();
 
-	public double[] getPosition(){
-		return new double[]{xPosition, yPosition, zPosition};
-	}
+	/**
+	 * @methodtype conversion method
+	 * @return spherical representation of coordinate
+	 */
+	SphericCoordinate asSphericCoordinate();
 
-	public double getXPosition(){
-		return  this.xPosition;
-	}
+	/**
+	 * @methodtype comparison method
+	 * @param other coordinate to compare this with
+	 * @return returns whether the two coordinates are at the same point in space
+	 */
+	boolean isEqual(Coordinate other);
 
-	public double getYPosition(){
-		return  this.yPosition;
-	}
+	/**
+	 * Calculates the central angle between two points
+	 * @methodtype get
+	 * @param other coordinate to calculate the central angle between
+	 * @return central angle between the two coordinates
+	 */
+	double getCentralAngle(Coordinate other);
 
-	public double getZPosition(){
-		return  this.zPosition;
-	}
+	/**
+	 * @methodtype get
+	 * @return precision with which floating point variables are compared
+	 */
+	double getEpsilon();
 
-	public boolean isEqual(Coordinate other){
-		return this.xPosition == other.getXPosition()
-				&& this.yPosition == other.getYPosition()
-				&& this.zPosition == other.getZPosition();
-	}
-
-	public double getDistance(Coordinate other) {
-		return Math.sqrt(Math.pow(this.xPosition - other.getXPosition(), 2)
-				+ Math.pow(this.yPosition - other.getYPosition(), 2)
-				+ Math.pow(this.zPosition - other.getZPosition(), 2));
-	}
-
-	@Override
-	public boolean equals(Object other){
-		if(!(other instanceof Coordinate)){
-			return false;
-		}
-		Coordinate otherCoordinate = (Coordinate)other;
-		return this.isEqual(otherCoordinate);
-	}
+	/**
+	 * Calculate the cartesian distance between two points
+	 * @methodtype get
+	 * @param other other coordinate to calculate the cartesian distance between
+	 * @return cartesian distance between the two coordinates
+	 */
+	double getCartesianDistance(Coordinate other);
 }
