@@ -13,8 +13,7 @@ package org.wahlzeit.model;
 /**
  * Class that represents a point with cartesian coordinates
  */
-public class CartesianCoordinate implements Coordinate {
-    private static final double EPSILON = 0.00001;
+public class CartesianCoordinate extends AbstractCoordinate {
 
     private final double xPosition;
     private final double yPosition;
@@ -30,6 +29,7 @@ public class CartesianCoordinate implements Coordinate {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.zPosition = zPosition;
+        EPSILON = 0.00001;
     }
 
     /**
@@ -116,40 +116,6 @@ public class CartesianCoordinate implements Coordinate {
         boolean isYEqual = isDoubleEqual(this.yPosition, otherCartesian.getYPosition());
         boolean isZEqual = isDoubleEqual(this.zPosition, otherCartesian.getZPosition());
         return (isXEqual && isYEqual && isZEqual);
-    }
-
-    /**
-     * Calculates the central angle between two points using the implementation of ShpericCoordinate
-     * @methodtype get
-     * @param other coordinate to calculate the central angle between
-     * @return central angle between the two coordinates
-     */
-    @Override
-    public double getCentralAngle(Coordinate other) {
-        return this.asSphericCoordinate().getCentralAngle(other);
-    }
-
-    /**
-     * @methodtype get
-     * @return precision with which floating point variables are compared
-     */
-    @Override
-    public double getEpsilon() {
-        return EPSILON;
-    }
-
-    /**
-     * Calculate the cartesian distance between two points
-     * @methodtype get
-     * @param other other coordinate to calculate the cartesian distance between
-     * @return cartesian distance between the two coordinates
-     */
-    @Override
-    public double getCartesianDistance(Coordinate other) {
-        CartesianCoordinate otherCartesian = other.asCartesianCoordinate();
-        return Math.sqrt(Math.pow(this.xPosition - otherCartesian.getXPosition(), 2)
-                + Math.pow(this.yPosition - otherCartesian.getYPosition(), 2)
-                + Math.pow(this.zPosition - otherCartesian.getZPosition(), 2));
     }
 
     @Override

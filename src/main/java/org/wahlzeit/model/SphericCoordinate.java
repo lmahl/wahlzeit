@@ -13,9 +13,8 @@ package org.wahlzeit.model;
 /**
  * Class that represents a point with spherical coordinates
  */
-public class SphericCoordinate implements  Coordinate{
+public class SphericCoordinate extends AbstractCoordinate{
 
-    private static final double EPSILON = 0.00001;
     private static final double CIRCLE_DEGREES = 360.0;
 
     private final double radius;
@@ -32,6 +31,7 @@ public class SphericCoordinate implements  Coordinate{
         this.radius = radius;
         this.polarAngle = polarAngle;
         this.azimuthalAngle = azimuthalAngle;
+        EPSILON = 0.00001;
     }
 
     /**
@@ -97,49 +97,6 @@ public class SphericCoordinate implements  Coordinate{
         boolean isPolarAngleEqual = isAngleEqual(this.polarAngle, otherSpheric.getPolarAngle());
 
         return (isRadiusEqual && isAzimuthalAngleEqual && isPolarAngleEqual);
-    }
-
-    /**
-     * Calculates the central angle between two points using the harvesine formula
-     * @methodtype get
-     * @param other coordinate to calculate the central angle between
-     * @return central angle between the two coordinates
-     */
-    @Override
-    public double getCentralAngle(Coordinate other) {
-        double intermediateA;
-        double intermediateB;
-        double intermediateC;
-        SphericCoordinate otherSpheric = other.asSphericCoordinate();
-
-        intermediateC = Math.pow(Math.sin(Math.toRadians(Math.abs(this.getPolarAngle() - otherSpheric.getPolarAngle()) / 2)), 2);
-        intermediateB = Math.pow(Math.sin(Math.toRadians(Math.abs(this.getAzimuthalAngle() - otherSpheric.getAzimuthalAngle()) / 2)), 2);
-        intermediateA = Math.sqrt(intermediateB
-                + Math.cos(Math.toRadians(this.polarAngle))
-                * Math.cos(Math.toRadians(otherSpheric.getPolarAngle()))
-                * intermediateC);
-
-        return 2 * Math.asin(intermediateA);
-    }
-
-    /**
-     * @methodtype get
-     * @return precision with which floating point variables are compared
-     */
-    @Override
-    public double getEpsilon() {
-        return EPSILON;
-    }
-
-    /**
-     * Calculate the cartesian distance between two points
-     * @methodtype get
-     * @param other other coordinate to calculate the cartesian distance between
-     * @return cartesian distance between the two coordinates
-     */
-    @Override
-    public double getCartesianDistance(Coordinate other) {
-        return this.asCartesianCoordinate().getCartesianDistance(other);
     }
 
     @Override

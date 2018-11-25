@@ -36,6 +36,8 @@ public class CartesianCoordinateTest {
         assertEquals(c1.getXPosition(),c1.getPosition()[0], c1. getEpsilon());
         assertEquals(c1.getYPosition(),c1.getPosition()[1], c1. getEpsilon());
         assertEquals(c1.getZPosition(),c1.getPosition()[2], c1. getEpsilon());
+        assert(c1 instanceof AbstractCoordinate);
+        assert(c1 instanceof Coordinate);
     }
 
     @Test

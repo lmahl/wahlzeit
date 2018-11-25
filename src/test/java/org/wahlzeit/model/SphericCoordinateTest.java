@@ -37,6 +37,9 @@ public class SphericCoordinateTest {
         assertEquals(-3.4, s2.getRadius(), s1.getEpsilon());
         assertEquals(-45, s2.getPolarAngle(), s1.getEpsilon());
         assertEquals(550, s2.getAzimuthalAngle(), s1.getEpsilon());
+
+        assert(s1 instanceof AbstractCoordinate);
+        assert(s1 instanceof Coordinate);
     }
 
     @Test
