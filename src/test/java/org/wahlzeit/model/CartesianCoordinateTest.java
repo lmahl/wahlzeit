@@ -1,10 +1,10 @@
 /**
  * SphericCoordinatTest
- *
+ * <p>
  * Version: 1.0
- *
+ * <p>
  * Date: 18.11.2018
- *
+ * <p>
  * License: AGPLv3
  */
 
@@ -23,25 +23,26 @@ public class CartesianCoordinateTest {
     @Before
     public void setUp() throws Exception {
         c1 = new CartesianCoordinate(3.0, 4.0, 5.0);
-        c2 = new CartesianCoordinate(-3.1, -4.2, -5.3);;
-        origin = new CartesianCoordinate(0,0,0);
+        c2 = new CartesianCoordinate(-3.1, -4.2, -5.3);
+        ;
+        origin = new CartesianCoordinate(0, 0, 0);
     }
 
     @Test
-    public void testInitialization(){
+    public void testInitialization() {
         assertEquals(3, c1.getPosition().length);
-        assertEquals(3.0,c1.getXPosition(), c1.getEpsilon());
-        assertEquals(4.0,c1.getYPosition(), c1.getEpsilon());
-        assertEquals(5.0,c1.getZPosition(), c1.getEpsilon());
-        assertEquals(c1.getXPosition(),c1.getPosition()[0], c1. getEpsilon());
-        assertEquals(c1.getYPosition(),c1.getPosition()[1], c1. getEpsilon());
-        assertEquals(c1.getZPosition(),c1.getPosition()[2], c1. getEpsilon());
-        assert(c1 instanceof AbstractCoordinate);
-        assert(c1 instanceof Coordinate);
+        assertEquals(3.0, c1.getXPosition(), c1.getEpsilon());
+        assertEquals(4.0, c1.getYPosition(), c1.getEpsilon());
+        assertEquals(5.0, c1.getZPosition(), c1.getEpsilon());
+        assertEquals(c1.getXPosition(), c1.getPosition()[0], c1.getEpsilon());
+        assertEquals(c1.getYPosition(), c1.getPosition()[1], c1.getEpsilon());
+        assertEquals(c1.getZPosition(), c1.getPosition()[2], c1.getEpsilon());
+        assert (c1 instanceof AbstractCoordinate);
+        assert (c1 instanceof Coordinate);
     }
 
     @Test
-    public void testEquals(){
+    public void testEquals() {
         CartesianCoordinate originPointer = origin;
         CartesianCoordinate originCopy = new CartesianCoordinate(origin.getXPosition(), origin.getYPosition(), origin.getZPosition());
         CartesianCoordinate coordinate = new CartesianCoordinate(3.0, 4.0, 5.0);
@@ -59,16 +60,16 @@ public class CartesianCoordinateTest {
     }
 
     @Test
-    public void testGetCartesianDistance(){
+    public void testGetCartesianDistance() {
         Coordinate originPointer = origin;
 
         assert (origin.getCartesianDistance(originPointer) == 0);
         assert (originPointer.getCartesianDistance(origin) == 0);
-        assert (c1.getCartesianDistance(origin) == Math.sqrt(9+16+25));
+        assert (c1.getCartesianDistance(origin) == Math.sqrt(9 + 16 + 25));
     }
 
     @Test
-    public void testSphericConversion(){
+    public void testSphericConversion() {
         SphericCoordinate s1 = c1.asSphericCoordinate();
         SphericCoordinate s2 = c2.asSphericCoordinate();
         SphericCoordinate sOrigin = origin.asSphericCoordinate();
@@ -87,14 +88,39 @@ public class CartesianCoordinateTest {
     }
 
     @Test
-    public void testCartesianConversion(){
+    public void testCartesianConversion() {
         assertEquals(c1, c1.asCartesianCoordinate());
     }
 
     @Test
-    public void testGetCentralAngle(){
-        assertEquals(0.6435011 ,origin.getCentralAngle(c1), c1.getEpsilon());
-        assertEquals(0.6435011 ,c1.getCentralAngle(origin), c1.getEpsilon());
+    public void testGetCentralAngle() {
+        assertEquals(0.6435011, origin.getCentralAngle(c1), c1.getEpsilon());
+        assertEquals(0.6435011, c1.getCentralAngle(origin), c1.getEpsilon());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalXPostion(){
+        Coordinate cart = new CartesianCoordinate(Double.POSITIVE_INFINITY, 0, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalYPostion(){
+        Coordinate cart = new CartesianCoordinate(0, Double.POSITIVE_INFINITY, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalZPostion(){
+        Coordinate cart = new CartesianCoordinate(0, 0, Double.NaN);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEqualsNull(){
+        c1.equals(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIsEqualNull(){
+        c1.isEqual(null);
+    }
+    
 }

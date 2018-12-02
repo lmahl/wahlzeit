@@ -1,10 +1,10 @@
 /**
  * CartesianCoordinate
- *
+ * <p>
  * Version: 1.0
- *
+ * <p>
  * Date: 18.11.2018
- *
+ * <p>
  * License: AGPLv3
  */
 
@@ -21,22 +21,32 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     /**
      * @methodtype constructor
+     * @post internal values are set to parameter values
      * @param xPosition position on the x-axis of the coordinate space
      * @param yPosition position on the y-axis of the coordinate space
      * @param zPosition position on the z-axis of the coordinate space
      */
-    public CartesianCoordinate(double xPosition, double yPosition, double zPosition){
+    public CartesianCoordinate(double xPosition, double yPosition, double zPosition) {
+        assertArgumentFiniteDouble(xPosition);
+        assertArgumentFiniteDouble(yPosition);
+        assertArgumentFiniteDouble(zPosition);
+
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.zPosition = zPosition;
         EPSILON = 0.00001;
+
+        assert (this.xPosition == xPosition);
+        assert (this.yPosition == yPosition);
+        assert (this.zPosition == zPosition);
+        assertClassInvariants();
     }
 
     /**
      * @methodtype get
      * @return an array containing x, y and z cartesian coordinate values
      */
-    public double[] getPosition(){
+    public double[] getPosition() {
         return new double[]{xPosition, yPosition, zPosition};
     }
 
@@ -44,41 +54,33 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype get
      * @return cartesian coordinate value for x-axis
      */
-    public double getXPosition(){
-        return  this.xPosition;
+    public double getXPosition() {
+        return this.xPosition;
     }
 
     /**
      * @methodtype get
      * @return cartesian coordinate value for y-axis
      */
-    public double getYPosition(){
-        return  this.yPosition;
+    public double getYPosition() {
+        return this.yPosition;
     }
 
     /**
      * @methodtype get
      * @return cartesian coordinate value for z-axis
      */
-    public double getZPosition(){
-        return  this.zPosition;
+    public double getZPosition() {
+        return this.zPosition;
     }
 
-    /**
-     * @methodtype conversion method
-     * @return cartesian representation of cartesian coordinate
-     */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate doAsCartesianCoordinate() {
         return this;
     }
 
-    /**
-     * @methodtype conversion method
-     * @return spherical representation of cartesian coordinate
-     */
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate doAsSphericCoordinate() {
         double radius;
         double polarAngle;
         double azimuthalAngle;
@@ -88,29 +90,24 @@ public class CartesianCoordinate extends AbstractCoordinate {
                 this.yPosition * this.yPosition +
                 this.zPosition * this.zPosition);
 
-        if(isDoubleEqual(this.zPosition, 0.0)){
+        if (isDoubleEqual(this.zPosition, 0.0)) {
             polarAngle = 90;
         } else {
             intermediate = Math.sqrt(this.xPosition * this.xPosition + this.yPosition * this.yPosition) / this.zPosition;
             polarAngle = Math.abs(Math.toDegrees(Math.atan(intermediate)));
         }
 
-        if(isDoubleEqual(this.xPosition, 0.0)) {
+        if (isDoubleEqual(this.xPosition, 0.0)) {
             azimuthalAngle = 90;
-        }else{
+        } else {
             azimuthalAngle = Math.abs(Math.toDegrees(Math.atan(this.yPosition / this.xPosition)));
         }
 
         return new SphericCoordinate(radius, polarAngle, azimuthalAngle);
     }
 
-    /**
-     * @methodtype comparison method
-     * @param other coordinate to compare this with
-     * @return returns whether the two coordinates are at the same point in space
-     */
     @Override
-    public boolean isEqual(Coordinate other) {
+    protected boolean doIsEqual(Coordinate other) {
         CartesianCoordinate otherCartesian = other.asCartesianCoordinate();
         boolean isXEqual = isDoubleEqual(this.xPosition, otherCartesian.getXPosition());
         boolean isYEqual = isDoubleEqual(this.yPosition, otherCartesian.getYPosition());
@@ -119,11 +116,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public boolean equals(Object other){
-        if(!(other instanceof Coordinate)){
+    protected boolean doEquals(Object other){
+        if (!(other instanceof Coordinate)) {
             return false;
         }
-        Coordinate otherCoordinate = (Coordinate)other;
+        Coordinate otherCoordinate = (Coordinate) other;
         return this.isEqual(otherCoordinate);
     }
 
@@ -132,7 +129,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodype helper
      * @return whether the two values are equal
      */
-    private boolean isDoubleEqual(double a, double b){
+    private boolean isDoubleEqual(double a, double b) {
         return (Math.abs(a - b) < this.getEpsilon());
+    }
+
+    @Override
+    protected void assertClassInvariants() {
+        assert (EPSILON >= 0);
+        assert (Double.isFinite(xPosition));
+        assert (Double.isFinite(yPosition));
+        assert (Double.isFinite(zPosition));
     }
 }

@@ -1,10 +1,10 @@
 /**
  * SphericCoordinate
- *
+ * <p>
  * Version: 1.0
- *
+ * <p>
  * Date: 18.11.2018
- *
+ * <p>
  * License: AGPLv3
  */
 
@@ -13,9 +13,12 @@ package org.wahlzeit.model;
 /**
  * Class that represents a point with spherical coordinates
  */
-public class SphericCoordinate extends AbstractCoordinate{
+public class SphericCoordinate extends AbstractCoordinate {
 
     private static final double CIRCLE_DEGREES = 360.0;
+    private static final String INVALID_RADIUS = "radius must be positive or 0";
+    private static final String INVALID_AZIMUTH = "azimuthal angle must be in interval [0, 360[";
+    private static final String INVALID_POLE = "polar angle must be in interval [0, 180[";
 
     private final double radius;
     private final double polarAngle;
@@ -23,15 +26,37 @@ public class SphericCoordinate extends AbstractCoordinate{
 
     /**
      * @methodype constructor
+     * @pre radius is not null and not smaller than 0
+     * @pre polar angle is not null and in interval [0,180[
+     * @pre azimuthal angle is not null and in interval[0,360[
+     * @post internal values are set to parameter values
      * @param radius distance from point to cartesian origin
      * @param polarAngle polar angle of the point
      * @param azimuthalAngle azimuthal angle of the point
      */
-    public SphericCoordinate(double radius, double polarAngle, double azimuthalAngle){
+    public SphericCoordinate(double radius, double polarAngle, double azimuthalAngle) {
+        assertArgumentFiniteDouble(radius);
+        assertArgumentFiniteDouble(polarAngle);
+        assertArgumentFiniteDouble(azimuthalAngle);
+        if(azimuthalAngle < 0 || azimuthalAngle >= 360){
+            throw new IllegalArgumentException(INVALID_AZIMUTH);
+        }
+        if(polarAngle < 0 || polarAngle >= 180){
+            throw new IllegalArgumentException(INVALID_POLE);
+        }
+        if(radius < 0){
+            throw new IllegalArgumentException(INVALID_RADIUS);
+        }
+
         this.radius = radius;
         this.polarAngle = polarAngle;
         this.azimuthalAngle = azimuthalAngle;
         EPSILON = 0.00001;
+
+        assert(this.radius == radius);
+        assert(this.azimuthalAngle == azimuthalAngle);
+        assert(this.polarAngle == polarAngle);
+        assertClassInvariants();
     }
 
     /**
@@ -58,12 +83,8 @@ public class SphericCoordinate extends AbstractCoordinate{
         return azimuthalAngle;
     }
 
-    /**
-     * @methodtype conversion method
-     * @return cartesian representation of spherical coordinate
-     */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    protected CartesianCoordinate doAsCartesianCoordinate() {
         double xPosition = this.radius * Math.sin(Math.toRadians(this.polarAngle))
                 * Math.cos(Math.toRadians(this.azimuthalAngle));
 
@@ -75,36 +96,30 @@ public class SphericCoordinate extends AbstractCoordinate{
         return new CartesianCoordinate(xPosition, yPosition, zPosition);
     }
 
-    /**
-     * @methodtype conversion method
-     * @return spherical representation of spherical coordinate
-     */
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    protected SphericCoordinate doAsSphericCoordinate() {
         return this;
     }
 
-    /**
-     * @methodtype comparison method
-     * @param other coordinate to compare this with
-     * @return returns whether the two coordinates are at the same point in space
-     */
     @Override
-    public boolean isEqual(Coordinate other) {
+    protected boolean doIsEqual(Coordinate other) {
         SphericCoordinate otherSpheric = other.asSphericCoordinate();
         boolean isRadiusEqual = isDoubleEqual(this.radius, otherSpheric.getRadius());
         boolean isAzimuthalAngleEqual = isAngleEqual(this.azimuthalAngle, otherSpheric.getAzimuthalAngle());
         boolean isPolarAngleEqual = isAngleEqual(this.polarAngle, otherSpheric.getPolarAngle());
 
+        if(isDoubleEqual(radius, 0.0)){
+            return (isRadiusEqual);
+        }
         return (isRadiusEqual && isAzimuthalAngleEqual && isPolarAngleEqual);
     }
 
     @Override
-    public boolean equals(Object other){
-        if(!(other instanceof Coordinate)){
+    protected boolean doEquals(Object other) {
+        if (!(other instanceof Coordinate)) {
             return false;
         }
-        Coordinate otherCoordinate = (Coordinate)other;
+        Coordinate otherCoordinate = (Coordinate) other;
         return this.isEqual(otherCoordinate);
     }
 
@@ -113,7 +128,7 @@ public class SphericCoordinate extends AbstractCoordinate{
      * @methodype helper
      * @return whether the two values are equal
      */
-    private boolean isDoubleEqual(double a, double b){
+    private boolean isDoubleEqual(double a, double b) {
         return (Math.abs(a - b) < this.getEpsilon());
     }
 
@@ -122,7 +137,7 @@ public class SphericCoordinate extends AbstractCoordinate{
      * @methodype helper
      * @return whether the two values are equal
      */
-    private boolean isAngleEqual (double a, double b){
+    private boolean isAngleEqual(double a, double b) {
         double modA = getPositiveModulus(a, CIRCLE_DEGREES);
         double modB = getPositiveModulus(b, CIRCLE_DEGREES);
         return isDoubleEqual(modA, modB);
@@ -134,12 +149,24 @@ public class SphericCoordinate extends AbstractCoordinate{
      * @param mod
      * @return returns value % mod, where a possible negative value is converted to a positive one
      */
-    private double getPositiveModulus(double value, double mod){
+    private double getPositiveModulus(double value, double mod) {
         double result = value % mod;
-        if (result < 0){
+        if (result < 0) {
             result = result + mod;
         }
 
         return result;
+    }
+
+    protected void assertClassInvariants(){
+        assert (EPSILON >= 0);
+        assert (Double.isFinite(radius));
+        assert (radius >= 0);
+        assert (Double.isFinite(azimuthalAngle));
+        assert (Double.isFinite(polarAngle));
+        assert (azimuthalAngle >= 0);
+        assert (azimuthalAngle < 360);
+        assert (polarAngle >= 0);
+        assert (polarAngle < 180);
     }
 }

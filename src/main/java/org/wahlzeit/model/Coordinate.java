@@ -1,10 +1,10 @@
 /**
  * Coordinate
- *
+ * <p>
  * Version: 1.0
- *
+ * <p>
  * Date: 18.11.2018
- *
+ * <p>
  * License: AGPLv3
  */
 
@@ -12,6 +12,10 @@ package org.wahlzeit.model;
 
 /**
  * Interface to represent a coordinate in space
+ * For any Representation, EPSILON Value must not be smaller than 0
+ * For Spherical Representation, azimuth angle has to be in intervall [0,360[
+ * For Spherical Representation, polar angle has to be in intervall [0,180[
+ * For Spherical Representation, radius must not be smaller then 0
  */
 public interface Coordinate {
 
