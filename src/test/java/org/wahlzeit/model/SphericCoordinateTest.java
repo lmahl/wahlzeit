@@ -12,6 +12,7 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.model.exceptions.ContractPostconditionViolatedException;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -62,7 +63,7 @@ public class SphericCoordinateTest {
 	}
 
 	@Test
-	public void testGetCartesianDistance() {
+	public void testGetCartesianDistance() throws ContractPostconditionViolatedException {
 		assertEquals(16.552607510, s1.getCartesianDistance(s2), s1.getEpsilon());
 		assertEquals(16.552607510, s2.getCartesianDistance(s1), s2.getEpsilon());
 
@@ -92,7 +93,7 @@ public class SphericCoordinateTest {
 	}
 
 	@Test
-	public void testGetCentralAngle() {
+	public void testGetCentralAngle() throws ContractPostconditionViolatedException{
 		assertEquals(1.1868238, origin.getCentralAngle(s1), s1.getEpsilon());
 		assertEquals(1.1868238, s1.getCentralAngle(origin), s1.getEpsilon());
 	}

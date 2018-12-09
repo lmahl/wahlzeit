@@ -10,6 +10,9 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.InvariantsIllegalException;
+import org.wahlzeit.services.LogBuilder;
+
 import java.util.logging.Logger;
 
 /**
@@ -20,6 +23,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	private final double xPosition;
 	private final double yPosition;
 	private final double zPosition;
+
+	private final static String EPSILON_VIOLATED = "EPSILON must be >= 0";
+	private final static String LOG_EPSILON_VIOLATED = "Class invariants violated: EPSILON must be >= 0";
+	private final static String X_VIOLATED = "xPostion must be finite";
+	private final static String LOG_X_VIOLATED = "Class invariants violated: xPostion must be finite";
+	private final static String Y_VIOLATED = "yPostion must be finite";
+	private final static String LOG_Y_VIOLATED = "Class invariants violated: yPostion must be finite";
+	private final static String Z_VIOLATED = "zPostion must be finite";
+	private final static String LOG_Z_VIOLATED = "Class invariants violated: zPostion must be finite";
 
 	/**
 	 * @methodtype constructor
@@ -139,9 +151,32 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
 	@Override
 	protected void assertClassInvariants() {
-		assert (EPSILON >= 0);
-		assert (Double.isFinite(xPosition));
-		assert (Double.isFinite(yPosition));
-		assert (Double.isFinite(zPosition));
+		if (EPSILON < 0){
+			InvariantsIllegalException ex = new InvariantsIllegalException(EPSILON_VIOLATED);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_EPSILON_VIOLATED, ex).toString());
+			throw (ex);
+		}
+
+		if (!Double.isFinite(xPosition)){
+			InvariantsIllegalException ex = new InvariantsIllegalException(X_VIOLATED);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_X_VIOLATED, ex).toString());
+			throw (ex);
+		}
+
+		if (!Double.isFinite(yPosition)){
+			InvariantsIllegalException ex = new InvariantsIllegalException(Y_VIOLATED);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_Y_VIOLATED, ex).toString());
+			throw (ex);
+		}
+
+		if (!Double.isFinite(zPosition)){
+			InvariantsIllegalException ex = new InvariantsIllegalException(Z_VIOLATED);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_Z_VIOLATED, ex).toString());
+			throw (ex);
+		}
 	}
 }

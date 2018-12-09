@@ -10,6 +10,9 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.InvariantsIllegalException;
+import org.wahlzeit.services.LogBuilder;
+
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +24,14 @@ public class SphericCoordinate extends AbstractCoordinate {
 	private static final String INVALID_RADIUS = "radius must be positive or 0";
 	private static final String INVALID_AZIMUTH = "azimuthal angle must be in interval [0, 360[";
 	private static final String INVALID_POLE = "polar angle must be in interval [0, 180[";
+	private final static String EPSILON_VIOLATED = "EPSILON must be >= 0";
+	private final static String LOG_EPSILON_VIOLATED = "Class invariants violated: EPSILON must be >= 0";
+	private final static String RADIUS_VIOLATED = "Radius must be >= 0";
+	private final static String LOG_RADIUS_VIOLATED = "Class invariants violated: Radius must be >= 0";
+	private final static String AZIMUTH_VIOLATED = "Azimuth must be in interval [0, 360[";
+	private final static String LOG_AZIMUTH_VIOLATED = "Class invariants violated: Azimuth must be in interval [0, 360[";
+	private final static String POLAR_VIOLATED = "Polar angle must be in interval [0, 180[";
+	private final static String LOG_POLAR_VIOLATED = "Class invariants violated: Polar angle must be in interval [0, 180[";
 
 	private final double radius;
 	private final double polarAngle;
@@ -162,14 +173,33 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	protected void assertClassInvariants(){
-		assert (EPSILON >= 0);
-		assert (Double.isFinite(radius));
-		assert (radius >= 0);
-		assert (Double.isFinite(azimuthalAngle));
-		assert (Double.isFinite(polarAngle));
-		assert (azimuthalAngle >= 0);
-		assert (azimuthalAngle < 360);
-		assert (polarAngle >= 0);
-		assert (polarAngle < 180);
+		if (EPSILON < 0){
+			InvariantsIllegalException ex = new InvariantsIllegalException(EPSILON_VIOLATED);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_EPSILON_VIOLATED, ex).toString());
+			throw (ex);
+		}
+
+		if (!Double.isFinite(radius) || radius < 0){
+			InvariantsIllegalException ex = new InvariantsIllegalException(RADIUS_VIOLATED);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_RADIUS_VIOLATED, ex).toString());
+			throw (ex);
+		}
+
+		if (!Double.isFinite(azimuthalAngle) || azimuthalAngle < 0 || azimuthalAngle >= 360){
+			InvariantsIllegalException ex = new InvariantsIllegalException(AZIMUTH_VIOLATED);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_AZIMUTH_VIOLATED, ex).toString());
+			throw (ex);
+		}
+
+		if (!Double.isFinite(polarAngle) || polarAngle < 0 || polarAngle >= 180){
+			InvariantsIllegalException ex = new InvariantsIllegalException(POLAR_VIOLATED);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_POLAR_VIOLATED, ex).toString());
+			throw (ex);
+		}
+
 	}
 }

@@ -11,16 +11,22 @@
 package org.wahlzeit.model;
 
 
+import org.wahlzeit.model.exceptions.ContractPostconditionViolatedException;
 import org.wahlzeit.services.LogBuilder;
 
 import java.util.logging.Logger;
 
 public abstract class AbstractCoordinate implements Coordinate {
 	protected static double EPSILON = 0.0;
-	private final String ARGUMENT_NULL = "Argument can not be null";
+	private final String ARGUMENT_NULL = "Argument must not be null";
 	private final String LOG_ARGUMENT_NULL = "Illegal argument with value null found";
 	private final String DOUBLE_INFINITE = "Argument must not be infinte or NAN";
 	private final String LOG_DOUBLE_INFINITE = "Illegal argument with double value infinite or NAN found";
+	private final String DISTANCE_ERROR = "Cartesian distance result is < 0 or infinite";
+	private final String LOG_DISTANCE_ERROR = "Contract violated: Cartesian distance result is < 0 or infinite";
+	private final String ANGLE_ERROR = "Central Angle result is not between o and 360 or infinite";
+	private final String LOG_ANGLE_ERROR = "Central Angle result is not between o and 360 or infinite";
+
 	protected Logger log = Logger.getLogger(Coordinate.class.getName());
 
 	/**
@@ -33,12 +39,17 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 
 	@Override
-	public double getCartesianDistance(Coordinate other) throws IllegalArgumentException{
+	public double getCartesianDistance(Coordinate other) throws IllegalArgumentException, ContractPostconditionViolatedException {
 		assertClassInvariants();
 		assertIsNonNullArgument(other);
 		double result = doGetCartesianDistance(other);
-		assert (Double.isFinite(result));
-		assert (result >= 0);
+
+		if(!Double.isFinite(result) || result < 0){
+			ContractPostconditionViolatedException ex = new ContractPostconditionViolatedException(DISTANCE_ERROR);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_DISTANCE_ERROR, ex).toString());
+			throw (ex);
+		}
 		assertClassInvariants();
 
 		return result;
@@ -68,14 +79,18 @@ public abstract class AbstractCoordinate implements Coordinate {
 
 
 	@Override
-	public double getCentralAngle(Coordinate other) throws IllegalArgumentException{
+	public double getCentralAngle(Coordinate other) throws IllegalArgumentException, ContractPostconditionViolatedException{
 		assertClassInvariants();
 		assertIsNonNullArgument(other);
 
 		double result = doGetCentralAngle(other);
 
-		assert (Double.isFinite(result));
-		assert (result <=360 && result >= 0);
+		if (!Double.isFinite(result) || !(result <=360 && result >= 0)){
+			ContractPostconditionViolatedException ex = new ContractPostconditionViolatedException(DISTANCE_ERROR);
+			log.severe(LogBuilder.createSystemMessage().
+					addException(LOG_DISTANCE_ERROR, ex).toString());
+			throw (ex);
+		}
 		assertClassInvariants();
 
 		return result;
@@ -140,6 +155,11 @@ public abstract class AbstractCoordinate implements Coordinate {
 		}
 	}
 
+	/**
+	 * Checks that the provided argument is finite
+	 * @methodtype assertion
+	 * @param argument
+	 */
 	protected void assertArgumentFiniteDouble(double d) {
 		if (!Double.isFinite(d)) {
 			IllegalArgumentException ex = new IllegalArgumentException(DOUBLE_INFINITE);

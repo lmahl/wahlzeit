@@ -10,6 +10,8 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.ContractPostconditionViolatedException;
+
 /**
  * Interface to represent a coordinate in space
  * For any Representation, EPSILON Value must not be smaller than 0
@@ -21,6 +23,7 @@ public interface Coordinate {
 
 	/**
 	 * @methodtype conversion method
+	 * @post return value is not null
 	 * @return cartesian representation of coordinate
 	 */
 	CartesianCoordinate asCartesianCoordinate();
@@ -47,7 +50,7 @@ public interface Coordinate {
 	 * @param other coordinate to calculate the central angle between
 	 * @return central angle between the two coordinates
 	 */
-	double getCentralAngle(Coordinate other) throws IllegalArgumentException;
+	double getCentralAngle(Coordinate other) throws IllegalArgumentException, ContractPostconditionViolatedException;
 
 	/**
 	 * @methodtype get
@@ -63,5 +66,5 @@ public interface Coordinate {
 	 * @param other other coordinate to calculate the cartesian distance between
 	 * @return cartesian distance between the two coordinates
 	 */
-	double getCartesianDistance(Coordinate other) throws IllegalArgumentException;
+	double getCartesianDistance(Coordinate other) throws IllegalArgumentException, ContractPostconditionViolatedException;
 }
