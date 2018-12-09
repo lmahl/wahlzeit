@@ -11,6 +11,10 @@
 package org.wahlzeit.model;
 
 import com.googlecode.objectify.annotation.Entity;
+import org.wahlzeit.services.LogBuilder;
+
+import java.util.logging.Logger;
+
 /**
  * Class that represents a Wahlzeit Photo containing a Sticker
  */
@@ -18,6 +22,7 @@ import com.googlecode.objectify.annotation.Entity;
 public class StickerPhoto extends Photo{
 
 	private Sticker sticker;
+	private final static Logger log = Logger.getLogger(StickerPhoto.class.getName());
 
 	/**
 	 * @methodtype constructor
@@ -29,23 +34,27 @@ public class StickerPhoto extends Photo{
 	/**
 	 * @methodtype constructor
 	 */
-	public StickerPhoto(PhotoId id) {
+	public StickerPhoto(PhotoId id) throws IllegalArgumentException{
 		super(id);
+		assertNotNull(id);
 	}
 
 	/**
 	 * @methodtype constructor
 	 */
-	public StickerPhoto(Sticker sticker) {
+	public StickerPhoto(Sticker sticker) throws IllegalArgumentException{
 		super();
+		assertNotNull(sticker);
 		this.sticker = sticker;
 	}
 
 	/**
 	 * @methodtype constructor
 	 */
-	public StickerPhoto(Sticker sticker, PhotoId id) {
+	public StickerPhoto(Sticker sticker, PhotoId id) throws IllegalArgumentException{
 		super(id);
+		assertNotNull(sticker);
+		assertNotNull(id);
 		this.sticker = sticker;
 	}
 
@@ -61,7 +70,24 @@ public class StickerPhoto extends Photo{
 	 * @methodtype set
 	 * @param sticker
 	 */
-	public void setSticker(Sticker sticker) {
+	public void setSticker(Sticker sticker) throws IllegalArgumentException{
+		assertNotNull(sticker);
 		this.sticker = sticker;
 	}
+
+
+	/**
+	 * Checks that the parameter is not null
+	 * @param val
+	 * @throws IllegalArgumentException
+	 */
+	private void assertNotNull(Object val) throws IllegalArgumentException{
+		if(val == null){
+			IllegalArgumentException ex = new IllegalArgumentException("Argument must not be null");
+			log.warning(LogBuilder.createSystemMessage().
+					addException("Argument must not be null", ex).toString());
+			throw ex;
+		}
+	}
+
 }
