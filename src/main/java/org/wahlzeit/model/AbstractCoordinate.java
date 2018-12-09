@@ -10,8 +10,18 @@
 
 package org.wahlzeit.model;
 
+
+import org.wahlzeit.services.LogBuilder;
+
+import java.util.logging.Logger;
+
 public abstract class AbstractCoordinate implements Coordinate {
 	protected static double EPSILON = 0.0;
+	private final String ARGUMENT_NULL = "Argument can not be null";
+	private final String LOG_ARGUMENT_NULL = "Illegal argument with value null found";
+	private final String DOUBLE_INFINITE = "Argument must not be infinte or NAN";
+	private final String LOG_DOUBLE_INFINITE = "Illegal argument with double value infinite or NAN found";
+	protected Logger log = Logger.getLogger(Coordinate.class.getName());
 
 	/**
 	 * @methodtype get
@@ -31,7 +41,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return cartesian distance between the two coordinates
 	 */
 	@Override
-	public double getCartesianDistance(Coordinate other) {
+	public double getCartesianDistance(Coordinate other) throws IllegalArgumentException{
 		assertClassInvariants();
 		assertIsNonNullArgument(other);
 		double result = doGetCartesianDistance(other);
@@ -57,7 +67,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return returns whether the two coordinates are at the same point in space
 	 */
 	@Override
-	public boolean isEqual(Coordinate other) {
+	public boolean isEqual(Coordinate other) throws IllegalArgumentException{
 		assertClassInvariants();
 		assertIsNonNullArgument(other);
 
@@ -79,7 +89,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return central angle between the two coordinates
 	 */
 	@Override
-	public double getCentralAngle(Coordinate other) {
+	public double getCentralAngle(Coordinate other) throws IllegalArgumentException{
 		assertClassInvariants();
 		assertIsNonNullArgument(other);
 
@@ -144,13 +154,19 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	protected void assertIsNonNullArgument(Object argument) {
 		if (argument == null) {
-			throw new IllegalArgumentException();
+			IllegalArgumentException ex = new IllegalArgumentException(ARGUMENT_NULL);
+			log.warning(LogBuilder.createSystemMessage().
+					addException(LOG_ARGUMENT_NULL, ex).toString());
+			throw ex;
 		}
 	}
 
 	protected void assertArgumentFiniteDouble(double d) {
 		if (!Double.isFinite(d)) {
-			throw new IllegalArgumentException();
+			IllegalArgumentException ex = new IllegalArgumentException(DOUBLE_INFINITE);
+			log.warning(LogBuilder.createSystemMessage().
+					addException(LOG_DOUBLE_INFINITE, ex).toString());
+			throw ex;
 		}
 	}
 
@@ -160,7 +176,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return true, if the two coordinates point to the same point in space
 	 */
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(Object other) throws IllegalArgumentException{
 		assertClassInvariants();
 		assertIsNonNullArgument(other);
 

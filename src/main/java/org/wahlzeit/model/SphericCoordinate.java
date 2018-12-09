@@ -10,6 +10,8 @@
 
 package org.wahlzeit.model;
 
+import java.util.logging.Logger;
+
 /**
  * Class that represents a point with spherical coordinates
  */
@@ -35,6 +37,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @param azimuthalAngle azimuthal angle of the point
 	 */
 	public SphericCoordinate(double radius, double polarAngle, double azimuthalAngle) {
+		log = Logger.getLogger(SphericCoordinate.class.getName());
 		assertArgumentFiniteDouble(radius);
 		assertArgumentFiniteDouble(polarAngle);
 		assertArgumentFiniteDouble(azimuthalAngle);

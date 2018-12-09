@@ -10,6 +10,8 @@
 
 package org.wahlzeit.model;
 
+import java.util.logging.Logger;
+
 /**
  * Class that represents a point with cartesian coordinates
  */
@@ -27,6 +29,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @param zPosition position on the z-axis of the coordinate space
 	 */
 	public CartesianCoordinate(double xPosition, double yPosition, double zPosition) {
+        log = Logger.getLogger(CartesianCoordinate.class.getName());
+
 		assertArgumentFiniteDouble(xPosition);
 		assertArgumentFiniteDouble(yPosition);
 		assertArgumentFiniteDouble(zPosition);

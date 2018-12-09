@@ -36,7 +36,7 @@ public interface Coordinate {
 	 * @param other coordinate to compare this with
 	 * @return returns whether the two coordinates are at the same point in space
 	 */
-	boolean isEqual(Coordinate other);
+	boolean isEqual(Coordinate other) throws IllegalArgumentException;
 
 	/**
 	 * Calculates the central angle between two points
@@ -44,7 +44,7 @@ public interface Coordinate {
 	 * @param other coordinate to calculate the central angle between
 	 * @return central angle between the two coordinates
 	 */
-	double getCentralAngle(Coordinate other);
+	double getCentralAngle(Coordinate other) throws IllegalArgumentException;
 
 	/**
 	 * @methodtype get
@@ -58,5 +58,5 @@ public interface Coordinate {
 	 * @param other other coordinate to calculate the cartesian distance between
 	 * @return cartesian distance between the two coordinates
 	 */
-	double getCartesianDistance(Coordinate other);
+	double getCartesianDistance(Coordinate other) throws IllegalArgumentException;
 }
