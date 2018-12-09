@@ -15,6 +15,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.model.exceptions.FailedToCreateInstanceException;
 
 import static junit.framework.TestCase.assertNotNull;
 
@@ -44,7 +45,7 @@ public class StickerPhotoFactoryTest {
 	}
 
 	@Test
-	public void testCreateSticker(){
+	public void testCreateSticker() throws FailedToCreateInstanceException {
 		StickerPhotoFactory factory = StickerPhotoFactory.getInstance();
 		Sticker st = new Sticker(1, 2, "foo", StickerGroup.MUSIC);
 		StickerPhoto createdPhoto = new StickerPhoto(st,PhotoId.getRandomId());
@@ -52,6 +53,5 @@ public class StickerPhotoFactoryTest {
 
 		assert(createdPhoto.getSticker() == factoryPhoto.getSticker());
 		assertNotNull(factory.createStickerPhoto());
-		//assertNotNull(factory.createStickerPhoto(PhotoId.getRandomId()));
 	}
 }

@@ -10,9 +10,15 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.FailedToCreateInstanceException;
+import org.wahlzeit.services.LogBuilder;
+
+import java.util.logging.Logger;
+
 public class StickerPhotoFactory extends PhotoFactory {
 
 	private static StickerPhotoFactory stickerPhotoFactory = null;
+	private final static Logger log = Logger.getLogger(StickerPhotoFactory.class.getName());
 
 	/**
 	 * @methodtype constructor
@@ -48,8 +54,18 @@ public class StickerPhotoFactory extends PhotoFactory {
 	 * @return Sticker Photo Instance
 	 */
 	@Override
-	public Photo createPhoto(PhotoId id) {
-		return new StickerPhoto(id);
+	public Photo createPhoto(PhotoId id) throws FailedToCreateInstanceException {
+		StickerPhoto photo;
+		try{
+			photo = new StickerPhoto(id);
+		} catch (IllegalArgumentException e){
+			FailedToCreateInstanceException ex = new FailedToCreateInstanceException("Could not create Instance of Photo", e);
+			log.warning(LogBuilder.createSystemMessage().
+					addException("Could not create Instance of Photo", ex).toString());
+			throw ex;
+		}
+
+		return photo;
 	}
 
 	/**
@@ -66,8 +82,18 @@ public class StickerPhotoFactory extends PhotoFactory {
 	 * @return Sticker Photo Instance
 	 */
 
-	public StickerPhoto createStickerPhoto(PhotoId id, Sticker sticker) {
-		return new StickerPhoto(sticker, id);
+	public StickerPhoto createStickerPhoto(PhotoId id, Sticker sticker) throws FailedToCreateInstanceException {
+		StickerPhoto photo;
+		try{
+			photo = new StickerPhoto(sticker, id);
+		} catch (IllegalArgumentException e){
+			FailedToCreateInstanceException ex = new FailedToCreateInstanceException("Could not create Instance of Photo", e);
+			log.warning(LogBuilder.createSystemMessage().
+					addException("Could not create Instance of Photo", ex).toString());
+			throw ex;
+		}
+
+		return photo;
 	}
 
 }
