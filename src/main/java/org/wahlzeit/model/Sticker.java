@@ -65,7 +65,12 @@ public class Sticker {
 		}
 	}
 
-	private void assertNotNull(Object val){
+	/**
+	 * Checks that the parameter is not null
+	 * @param val
+	 * @throws IllegalArgumentException
+	 */
+	private void assertNotNull(Object val) throws IllegalArgumentException{
 		if(val == null){
 			IllegalArgumentException ex = new IllegalArgumentException("Argument must not be null");
 			log.warning(LogBuilder.createSystemMessage().
