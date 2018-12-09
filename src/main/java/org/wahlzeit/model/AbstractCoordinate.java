@@ -28,7 +28,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	private final String ANGLE_ERROR = "Central Angle result is not between o and 360 or infinite";
 	private final String LOG_ANGLE_ERROR = "Central Angle result is not between o and 360 or infinite";
 
-	protected Logger log = Logger.getLogger(Coordinate.class.getName());
+	protected Logger log = Logger.getLogger(AbstractCoordinate.class.getName());
 
 	/**
 	 * @methodtype get
@@ -47,7 +47,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
 		if(!Double.isFinite(result) || result < 0){
 			ContractPostconditionViolatedException ex = new ContractPostconditionViolatedException(DISTANCE_ERROR);
-			log.severe(LogBuilder.createSystemMessage().
+			log.warning(LogBuilder.createSystemMessage().
 					addException(LOG_DISTANCE_ERROR, ex).toString());
 			throw (ex);
 		}
@@ -64,7 +64,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 			thisCartesian = this.asCartesianCoordinate();
 		} catch (ConversionFailedException e){
 			ContractPostconditionViolatedException ex = new ContractPostconditionViolatedException("Failed to provide result for method getCartesianDistance", e);
-			log.severe(LogBuilder.createSystemMessage().
+			log.warning(LogBuilder.createSystemMessage().
 					addException("Failed to provide result for method getCartesianDistance", ex).toString());
 			throw (ex);
 		}
@@ -97,7 +97,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
 		if (!Double.isFinite(result) || !(result <=360 && result >= 0)){
 			ContractPostconditionViolatedException ex = new ContractPostconditionViolatedException(DISTANCE_ERROR);
-			log.severe(LogBuilder.createSystemMessage().
+			log.warning(LogBuilder.createSystemMessage().
 					addException(LOG_DISTANCE_ERROR, ex).toString());
 			throw (ex);
 		}
@@ -118,7 +118,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 			thisSpheric = this.asSphericCoordinate();
 		} catch (ConversionFailedException e){
 			ContractPostconditionViolatedException ex = new ContractPostconditionViolatedException("Failed to provide result for method getCentralAngle", e);
-			log.severe(LogBuilder.createSystemMessage().
+			log.warning(LogBuilder.createSystemMessage().
 					addException("Failed to provide result for method getCentralAngle", ex).toString());
 			throw (ex);
 		}
