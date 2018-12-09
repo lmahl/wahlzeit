@@ -32,14 +32,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 		return EPSILON;
 	}
 
-	/**
-	 * Calculate the cartesian distance between two points
-	 * @methodtype get
-	 * @pre argument is not null
-	 * @post return vlaue is not null and positive
-	 * @param other other coordinate to calculate the cartesian distance between
-	 * @return cartesian distance between the two coordinates
-	 */
 	@Override
 	public double getCartesianDistance(Coordinate other) throws IllegalArgumentException{
 		assertClassInvariants();
@@ -60,12 +52,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 				+ Math.pow(thisCartesian.getZPosition() - otherCartesian.getZPosition(), 2));
 	}
 
-	/**
-	 * @methodtype comparison method
-	 * @pre argument is not null
-	 * @param other coordinate to compare this with
-	 * @return returns whether the two coordinates are at the same point in space
-	 */
 	@Override
 	public boolean isEqual(Coordinate other) throws IllegalArgumentException{
 		assertClassInvariants();
@@ -80,14 +66,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
 	protected abstract boolean doIsEqual(Coordinate other);
 
-	/**
-	 * Calculates the central angle between two points using the harvesine formula
-	 * @methodtype get
-	 * @pre parameter is not null
-	 * @post return value is not null and in intervall [0,360[
-	 * @param other coordinate to calculate the central angle between
-	 * @return central angle between the two coordinates
-	 */
+
 	@Override
 	public double getCentralAngle(Coordinate other) throws IllegalArgumentException{
 		assertClassInvariants();
