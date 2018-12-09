@@ -22,6 +22,7 @@ package org.wahlzeit.services;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import org.wahlzeit.model.exceptions.FailedToCreateInstanceException;
 
 import java.util.Collection;
 import java.util.List;
@@ -100,7 +101,17 @@ public abstract class ObjectManager {
 
 		log.config(LogBuilder.createSystemMessage().
 				addParameter("Datastore: load all entities of type", type.getName()).toString());
-		List<E> objects = OfyService.ofy().load().type(type).ancestor(applicationRootKey).list();
+
+		List<E> objects;
+		try{
+			objects = OfyService.ofy().load().type(type).ancestor(applicationRootKey).list();
+		} catch (Exception e){
+			IllegalArgumentException ex = new IllegalArgumentException("Failed to load objects ",e);
+			log.warning(LogBuilder.createSystemMessage().
+					addException("Failed to load objects", ex).toString());
+			throw ex;
+		}
+
 		log.config(LogBuilder.createSystemMessage().
 				addParameter("Datastore: number of loaded objects", objects.size()).toString());
 		result.addAll(objects);
@@ -119,8 +130,17 @@ public abstract class ObjectManager {
 		log.info(LogBuilder.createSystemMessage().
 				addMessage("Datastore: Load all Entities of type " + type.toString() + " where parameter "
 						+ propertyName + " = " + value.toString() + " from datastore.").toString());
-		List<E> objects = OfyService.ofy().load().type(type).
-				ancestor(applicationRootKey).filter(propertyName, value).list();
+
+		List<E> objects;
+		try{
+			objects = OfyService.ofy().load().type(type).
+					ancestor(applicationRootKey).filter(propertyName, value).list();
+		} catch (Exception e){
+			IllegalArgumentException ex = new IllegalArgumentException("Failed to load objects ",e);
+			log.warning(LogBuilder.createSystemMessage().
+					addException("Failed to load objects", ex).toString());
+			throw ex;
+		}
 		log.config(LogBuilder.createSystemMessage().
 				addParameter("Datastore: number of loaded objects", objects.size()).toString());
 		result.addAll(objects);

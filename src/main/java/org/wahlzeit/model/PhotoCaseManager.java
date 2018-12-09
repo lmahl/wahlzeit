@@ -20,6 +20,7 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.FailedToCreateInstanceException;
 import org.wahlzeit.services.ObjectManager;
 
 import java.util.Arrays;
