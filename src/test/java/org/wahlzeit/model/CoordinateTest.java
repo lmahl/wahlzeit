@@ -12,6 +12,7 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.model.exceptions.ConversionFailedException;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -29,7 +30,7 @@ public class CoordinateTest {
 	}
 
 	@Test
-	public void testConversion(){
+	public void testConversion() throws ConversionFailedException {
 		CartesianCoordinate c1 = new CartesianCoordinate(1,2,3);
 		SphericCoordinate s1 = c1.asSphericCoordinate();
 		CartesianCoordinate c1Back = s1.asCartesianCoordinate();

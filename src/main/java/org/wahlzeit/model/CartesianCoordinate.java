@@ -10,6 +10,7 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.ConversionFailedException;
 import org.wahlzeit.model.exceptions.InvariantsIllegalException;
 import org.wahlzeit.services.LogBuilder;
 
@@ -32,6 +33,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	private final static String LOG_Y_VIOLATED = "Class invariants violated: yPostion must be finite";
 	private final static String Z_VIOLATED = "zPostion must be finite";
 	private final static String LOG_Z_VIOLATED = "Class invariants violated: zPostion must be finite";
+	private final static String SPHERIC_CONVERSION_FAILED = "Failed to convert to SphericCoordinate";
+	private final static String LOG_SPHERIC_CONVERSION_FAILED = "Failed to convert to SphericCoordinate";
 
 	/**
 	 * @methodtype constructor
@@ -91,12 +94,12 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	}
 
 	@Override
-	public CartesianCoordinate doAsCartesianCoordinate() {
+	public CartesianCoordinate doAsCartesianCoordinate() throws ConversionFailedException {
 		return this;
 	}
 
 	@Override
-	public SphericCoordinate doAsSphericCoordinate() {
+	public SphericCoordinate doAsSphericCoordinate() throws ConversionFailedException {
 		double radius;
 		double polarAngle;
 		double azimuthalAngle;
@@ -119,12 +122,26 @@ public class CartesianCoordinate extends AbstractCoordinate {
 			azimuthalAngle = Math.abs(Math.toDegrees(Math.atan(this.yPosition / this.xPosition)));
 		}
 
+		SphericCoordinate result;
+		try{
+			result = new SphericCoordinate(radius,polarAngle,azimuthalAngle);
+		} catch (IllegalArgumentException e){
+			ConversionFailedException ex = new ConversionFailedException(SPHERIC_CONVERSION_FAILED , e);
+			log.warning(LogBuilder.createSystemMessage().
+					addException(LOG_SPHERIC_CONVERSION_FAILED, ex).toString());
+			throw ex;
+		}
 		return new SphericCoordinate(radius, polarAngle, azimuthalAngle);
 	}
 
 	@Override
 	protected boolean doIsEqual(Coordinate other) {
-		CartesianCoordinate otherCartesian = other.asCartesianCoordinate();
+		CartesianCoordinate otherCartesian;
+		try{
+			otherCartesian = other.asCartesianCoordinate();
+		} catch (ConversionFailedException ex){
+			return false;
+		}
 		boolean isXEqual = isDoubleEqual(this.xPosition, otherCartesian.getXPosition());
 		boolean isYEqual = isDoubleEqual(this.yPosition, otherCartesian.getYPosition());
 		boolean isZEqual = isDoubleEqual(this.zPosition, otherCartesian.getZPosition());

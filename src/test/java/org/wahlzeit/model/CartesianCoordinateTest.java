@@ -13,6 +13,7 @@ package org.wahlzeit.model;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit.model.exceptions.ContractPostconditionViolatedException;
+import org.wahlzeit.model.exceptions.ConversionFailedException;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -70,7 +71,7 @@ public class CartesianCoordinateTest {
 	}
 
 	@Test
-	public void testSphericConversion() {
+	public void testSphericConversion() throws ConversionFailedException {
 		SphericCoordinate s1 = c1.asSphericCoordinate();
 		SphericCoordinate s2 = c2.asSphericCoordinate();
 		SphericCoordinate sOrigin = origin.asSphericCoordinate();
@@ -89,7 +90,7 @@ public class CartesianCoordinateTest {
 	}
 
 	@Test
-	public void testCartesianConversion() {
+	public void testCartesianConversion() throws ConversionFailedException {
 		assertEquals(c1, c1.asCartesianCoordinate());
 	}
 

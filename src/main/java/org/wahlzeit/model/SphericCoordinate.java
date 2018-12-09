@@ -10,6 +10,7 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.ConversionFailedException;
 import org.wahlzeit.model.exceptions.InvariantsIllegalException;
 import org.wahlzeit.services.LogBuilder;
 
@@ -32,6 +33,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 	private final static String LOG_AZIMUTH_VIOLATED = "Class invariants violated: Azimuth must be in interval [0, 360[";
 	private final static String POLAR_VIOLATED = "Polar angle must be in interval [0, 180[";
 	private final static String LOG_POLAR_VIOLATED = "Class invariants violated: Polar angle must be in interval [0, 180[";
+	private final static String CARTESIAN_CONVERSION_FAILED = "Failed to convert to CartesianCoordinate";
+	private final static String LOG_CARTESIAN_CONVERSION_FAILED = "Failed to convert to CartesianCoordinate";
 
 	private final double radius;
 	private final double polarAngle;
@@ -98,7 +101,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	@Override
-	protected CartesianCoordinate doAsCartesianCoordinate() {
+	protected CartesianCoordinate doAsCartesianCoordinate() throws ConversionFailedException {
 		double xPosition = this.radius * Math.sin(Math.toRadians(this.polarAngle))
 				* Math.cos(Math.toRadians(this.azimuthalAngle));
 
@@ -107,6 +110,15 @@ public class SphericCoordinate extends AbstractCoordinate {
 
 		double zPosition = this.radius * Math.cos(Math.toRadians(this.polarAngle));
 
+		CartesianCoordinate result;
+		try{
+			result = new CartesianCoordinate(xPosition, yPosition, zPosition);
+		} catch (IllegalArgumentException e){
+			ConversionFailedException ex = new ConversionFailedException(CARTESIAN_CONVERSION_FAILED , e);
+			log.warning(LogBuilder.createSystemMessage().
+					addException(LOG_CARTESIAN_CONVERSION_FAILED, ex).toString());
+			throw ex;
+		}
 		return new CartesianCoordinate(xPosition, yPosition, zPosition);
 	}
 
@@ -117,7 +129,12 @@ public class SphericCoordinate extends AbstractCoordinate {
 
 	@Override
 	protected boolean doIsEqual(Coordinate other) {
-		SphericCoordinate otherSpheric = other.asSphericCoordinate();
+		SphericCoordinate otherSpheric;
+		try{
+			otherSpheric = other.asSphericCoordinate();
+		} catch (ConversionFailedException e){
+			return false;
+		}
 		boolean isRadiusEqual = isDoubleEqual(this.radius, otherSpheric.getRadius());
 		boolean isAzimuthalAngleEqual = isAngleEqual(this.azimuthalAngle, otherSpheric.getAzimuthalAngle());
 		boolean isPolarAngleEqual = isAngleEqual(this.polarAngle, otherSpheric.getPolarAngle());

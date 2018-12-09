@@ -12,6 +12,7 @@ package org.wahlzeit.model;
 
 
 import org.wahlzeit.model.exceptions.ContractPostconditionViolatedException;
+import org.wahlzeit.model.exceptions.ConversionFailedException;
 import org.wahlzeit.services.LogBuilder;
 
 import java.util.logging.Logger;
@@ -55,9 +56,18 @@ public abstract class AbstractCoordinate implements Coordinate {
 		return result;
 	}
 
-	private double doGetCartesianDistance(Coordinate other) {
-		CartesianCoordinate otherCartesian = other.asCartesianCoordinate();
-		CartesianCoordinate thisCartesian = this.asCartesianCoordinate();
+	private double doGetCartesianDistance(Coordinate other) throws ContractPostconditionViolatedException {
+		CartesianCoordinate otherCartesian;
+		CartesianCoordinate thisCartesian;
+		try{
+			otherCartesian = other.asCartesianCoordinate();
+			thisCartesian = this.asCartesianCoordinate();
+		} catch (ConversionFailedException e){
+			ContractPostconditionViolatedException ex = new ContractPostconditionViolatedException("Failed to provide result for method getCartesianDistance", e);
+			log.severe(LogBuilder.createSystemMessage().
+					addException("Failed to provide result for method getCartesianDistance", ex).toString());
+			throw (ex);
+		}
 		return Math.sqrt(Math.pow(thisCartesian.getXPosition() - otherCartesian.getXPosition(), 2)
 				+ Math.pow(thisCartesian.getYPosition() - otherCartesian.getYPosition(), 2)
 				+ Math.pow(thisCartesian.getZPosition() - otherCartesian.getZPosition(), 2));
@@ -96,12 +106,22 @@ public abstract class AbstractCoordinate implements Coordinate {
 		return result;
 	}
 
-	private double doGetCentralAngle(Coordinate other) {
+	private double doGetCentralAngle(Coordinate other) throws ContractPostconditionViolatedException {
 		double intermediateA;
 		double intermediateB;
 		double intermediateC;
-		SphericCoordinate otherSpheric = other.asSphericCoordinate();
-		SphericCoordinate thisSpheric = this.asSphericCoordinate();
+
+		SphericCoordinate otherSpheric;
+		SphericCoordinate thisSpheric;
+		try{
+			otherSpheric = other.asSphericCoordinate();
+			thisSpheric = this.asSphericCoordinate();
+		} catch (ConversionFailedException e){
+			ContractPostconditionViolatedException ex = new ContractPostconditionViolatedException("Failed to provide result for method getCentralAngle", e);
+			log.severe(LogBuilder.createSystemMessage().
+					addException("Failed to provide result for method getCentralAngle", ex).toString());
+			throw (ex);
+		}
 
 		intermediateC = Math.pow(Math.sin(Math.toRadians(Math.abs(thisSpheric.getPolarAngle() - otherSpheric.getPolarAngle()) / 2)), 2);
 		intermediateB = Math.pow(Math.sin(Math.toRadians(Math.abs(thisSpheric.getAzimuthalAngle() - otherSpheric.getAzimuthalAngle()) / 2)), 2);
@@ -118,28 +138,28 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return spherical representation of cartesian coordinate
 	 */
 	@Override
-	public SphericCoordinate asSphericCoordinate() {
+	public SphericCoordinate asSphericCoordinate() throws ConversionFailedException{
 		assertClassInvariants();
 		SphericCoordinate result = doAsSphericCoordinate();
 		assertClassInvariants();
 		return result;
 	}
 
-	protected abstract SphericCoordinate doAsSphericCoordinate();
+	protected abstract SphericCoordinate doAsSphericCoordinate() throws ConversionFailedException;
 
 	/**
 	 * @methodtype conversion method
 	 * @return cartesian representation of cartesian coordinate
 	 */
 	@Override
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate asCartesianCoordinate() throws ConversionFailedException {
 		assertClassInvariants();
 		CartesianCoordinate result = doAsCartesianCoordinate();
 		assertClassInvariants();
 		return result;
 	}
 
-	protected abstract CartesianCoordinate doAsCartesianCoordinate();
+	protected abstract CartesianCoordinate doAsCartesianCoordinate() throws ConversionFailedException;
 
 	/**
 	 * Checks that the provided argument is not null

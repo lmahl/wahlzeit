@@ -11,6 +11,7 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.model.exceptions.ContractPostconditionViolatedException;
+import org.wahlzeit.model.exceptions.ConversionFailedException;
 
 /**
  * Interface to represent a coordinate in space
@@ -25,20 +26,23 @@ public interface Coordinate {
 	 * @methodtype conversion method
 	 * @post return value is not null
 	 * @return cartesian representation of coordinate
+	 * @throws ConversionFailedException when converting is not possible
 	 */
-	CartesianCoordinate asCartesianCoordinate();
+	CartesianCoordinate asCartesianCoordinate() throws ConversionFailedException;
 
 	/**
 	 * @methodtype conversion method
 	 * @return spherical representation of coordinate
+	 * @throws ConversionFailedException when converting is not possible
 	 */
-	SphericCoordinate asSphericCoordinate();
+	SphericCoordinate asSphericCoordinate() throws ConversionFailedException;
 
 	/**
 	 * @methodtype comparison method
 	 * @pre argument is not null
 	 * @param other coordinate to compare this with
 	 * @return returns whether the two coordinates are at the same point in space
+	 * @throws IllegalArgumentException when precondition is not met
 	 */
 	boolean isEqual(Coordinate other) throws IllegalArgumentException;
 
@@ -49,6 +53,8 @@ public interface Coordinate {
 	 * @post return value is not null and in intervall [0,360[
 	 * @param other coordinate to calculate the central angle between
 	 * @return central angle between the two coordinates
+	 * @throws IllegalArgumentException when precondition is not met
+	 * @throws ContractPostconditionViolatedException when postcondition is not met
 	 */
 	double getCentralAngle(Coordinate other) throws IllegalArgumentException, ContractPostconditionViolatedException;
 
@@ -65,6 +71,8 @@ public interface Coordinate {
 	 * @post return vlaue is not null and positive
 	 * @param other other coordinate to calculate the cartesian distance between
 	 * @return cartesian distance between the two coordinates
+	 * @throws IllegalArgumentException when precondition is not met
+	 * @throws ContractPostconditionViolatedException when postcondition is not met
 	 */
 	double getCartesianDistance(Coordinate other) throws IllegalArgumentException, ContractPostconditionViolatedException;
 }
