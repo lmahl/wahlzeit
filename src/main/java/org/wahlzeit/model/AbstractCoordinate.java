@@ -12,7 +12,6 @@ package org.wahlzeit.model;
 
 public abstract class AbstractCoordinate implements Coordinate {
 	protected static double EPSILON = 0.0;
-	private final String OBJECT_NOT_COORDINATE = "Argument must be of Type Coordinate";
 
 	/**
 	 * @methodtype get
