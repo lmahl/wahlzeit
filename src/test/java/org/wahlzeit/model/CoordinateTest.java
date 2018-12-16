@@ -25,13 +25,13 @@ public class CoordinateTest {
 	@Test
 	public void testAssignment(){
 		Coordinate coordinate;
-		coordinate = new CartesianCoordinate(1,2,3);
-		coordinate = new SphericCoordinate(1,2,3);
+		coordinate = CartesianCoordinate.createCartesianCoordinate(1,2,3);
+		coordinate = SphericCoordinate.createSphericCoordinate(1,2,3);
 	}
 
 	@Test
 	public void testConversion() throws ConversionFailedException {
-		CartesianCoordinate c1 = new CartesianCoordinate(1,2,3);
+		CartesianCoordinate c1 = CartesianCoordinate.createCartesianCoordinate(1,2,3);
 		SphericCoordinate s1 = c1.asSphericCoordinate();
 		CartesianCoordinate c1Back = s1.asCartesianCoordinate();
 

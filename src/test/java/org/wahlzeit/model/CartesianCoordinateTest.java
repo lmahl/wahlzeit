@@ -24,10 +24,10 @@ public class CartesianCoordinateTest {
 
 	@Before
 	public void setUp() throws Exception {
-		c1 = new CartesianCoordinate(3.0, 4.0, 5.0);
-		c2 = new CartesianCoordinate(-3.1, -4.2, -5.3);
-		;
-		origin = new CartesianCoordinate(0, 0, 0);
+		c1 = CartesianCoordinate.createCartesianCoordinate(3.0, 4.0, 5.0);
+		c2 = CartesianCoordinate.createCartesianCoordinate(-3.1, -4.2, -5.3);
+
+		origin = CartesianCoordinate.createCartesianCoordinate(0, 0, 0);
 	}
 
 	@Test
@@ -46,9 +46,9 @@ public class CartesianCoordinateTest {
 	@Test
 	public void testEquals() {
 		CartesianCoordinate originPointer = origin;
-		CartesianCoordinate originCopy = new CartesianCoordinate(origin.getXPosition(), origin.getYPosition(), origin.getZPosition());
-		CartesianCoordinate coordinate = new CartesianCoordinate(3.0, 4.0, 5.0);
-		CartesianCoordinate second = new CartesianCoordinate(3.0, 4.0, 5.0);
+		CartesianCoordinate originCopy = CartesianCoordinate.createCartesianCoordinate(origin.getXPosition(), origin.getYPosition(), origin.getZPosition());
+		CartesianCoordinate coordinate = CartesianCoordinate.createCartesianCoordinate(3.0, 4.0, 5.0);
+		CartesianCoordinate second = CartesianCoordinate.createCartesianCoordinate(3.0, 4.0, 5.0);
 
 		assert (origin.equals(originPointer));
 		assert (origin.equals(originCopy));
@@ -102,17 +102,17 @@ public class CartesianCoordinateTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalXPostion(){
-		Coordinate cart = new CartesianCoordinate(Double.POSITIVE_INFINITY, 0, 0);
+		Coordinate cart = CartesianCoordinate.createCartesianCoordinate(Double.POSITIVE_INFINITY, 0, 0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalYPostion(){
-		Coordinate cart = new CartesianCoordinate(0, Double.POSITIVE_INFINITY, 0);
+		Coordinate cart = CartesianCoordinate.createCartesianCoordinate(0, Double.POSITIVE_INFINITY, 0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalZPostion(){
-		Coordinate cart = new CartesianCoordinate(0, 0, Double.NaN);
+		Coordinate cart = CartesianCoordinate.createCartesianCoordinate(0, 0, Double.NaN);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

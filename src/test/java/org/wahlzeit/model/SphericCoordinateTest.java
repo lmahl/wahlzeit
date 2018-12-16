@@ -25,9 +25,9 @@ public class SphericCoordinateTest {
 
 	@Before
 	public void setUp() throws Exception {
-		s1 = new SphericCoordinate(5.4, 38, 22);
-		s2 = new SphericCoordinate(12, 179, 359);
-		origin = new SphericCoordinate(0, 90, 90);
+		s1 = SphericCoordinate.createSphericCoordinate(5.4, 38, 22);
+		s2 = SphericCoordinate.createSphericCoordinate(12, 179, 359);
+		origin = SphericCoordinate.createSphericCoordinate(0, 90, 90);
 	}
 
 	@Test
@@ -47,9 +47,9 @@ public class SphericCoordinateTest {
 	@Test
 	public void testEquals() {
 		SphericCoordinate originPointer = origin;
-		SphericCoordinate originCopy = new SphericCoordinate(origin.getRadius(), origin.getPolarAngle(), origin.getAzimuthalAngle());
-		SphericCoordinate coordinate = new SphericCoordinate(3.0, 4.0, 5.0);
-		SphericCoordinate second = new SphericCoordinate(3.0, 4.0, 5.0);
+		SphericCoordinate originCopy = SphericCoordinate.createSphericCoordinate(origin.getRadius(), origin.getPolarAngle(), origin.getAzimuthalAngle());
+		SphericCoordinate coordinate = SphericCoordinate.createSphericCoordinate(3.0, 4.0, 5.0);
+		SphericCoordinate second = SphericCoordinate.createSphericCoordinate(3.0, 4.0, 5.0);
 
 		assert (origin.equals(originPointer));
 		assert (origin.equals(originCopy));
@@ -101,27 +101,27 @@ public class SphericCoordinateTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testTooSmallRadius(){
-		Coordinate sph = new SphericCoordinate(-1,2,3);
+		Coordinate sph = SphericCoordinate.createSphericCoordinate(-1,2,3);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAzimuthSmallRadius(){
-		Coordinate sph = new SphericCoordinate(0,2,-1);
+		Coordinate sph = SphericCoordinate.createSphericCoordinate(0,2,-1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAzimuthTooBig(){
-		Coordinate sph = new SphericCoordinate(0,2,360);
+		Coordinate sph = SphericCoordinate.createSphericCoordinate(0,2,360);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testPolarTooSmall(){
-		Coordinate sph = new SphericCoordinate(0,-1,1);
+		Coordinate sph = SphericCoordinate.createSphericCoordinate(0,-1,1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testPolarTooBig(){
-		Coordinate sph = new SphericCoordinate(0,180,360);
+		Coordinate sph = SphericCoordinate.createSphericCoordinate(0,180,360);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

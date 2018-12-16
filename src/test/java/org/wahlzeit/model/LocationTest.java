@@ -21,7 +21,7 @@ public class LocationTest {
 	 */
 	@Test
 	public void testAssociatedCoordinates(){
-		Location location = new Location(new CartesianCoordinate(0,0,0));
+		Location location = new Location(CartesianCoordinate.createCartesianCoordinate(0,0,0));
 		assert (location.getCoordinate() != null);
 	}
 }

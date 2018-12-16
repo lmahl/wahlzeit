@@ -178,7 +178,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	/**
 	 * Checks that the provided argument is finite
 	 * @methodtype assertion
-	 * @param argument
+	 * @param d argument
 	 */
 	protected void assertArgumentFiniteDouble(double d) {
 		if (!Double.isFinite(d)) {

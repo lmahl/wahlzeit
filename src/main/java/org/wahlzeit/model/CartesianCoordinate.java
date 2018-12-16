@@ -14,6 +14,8 @@ import org.wahlzeit.model.exceptions.ConversionFailedException;
 import org.wahlzeit.model.exceptions.InvariantsIllegalException;
 import org.wahlzeit.services.LogBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -36,6 +38,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	private final static String SPHERIC_CONVERSION_FAILED = "Failed to convert to SphericCoordinate";
 	private final static String LOG_SPHERIC_CONVERSION_FAILED = "Failed to convert to SphericCoordinate";
 
+	private static Map cartesianCoordinates = new HashMap<String, CartesianCoordinate>();
+
 	/**
 	 * @methodtype constructor
 	 * @post internal values are set to parameter values
@@ -43,7 +47,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @param yPosition position on the y-axis of the coordinate space
 	 * @param zPosition position on the z-axis of the coordinate space
 	 */
-	public CartesianCoordinate(double xPosition, double yPosition, double zPosition) {
+	private CartesianCoordinate(double xPosition, double yPosition, double zPosition) {
         log = Logger.getLogger(CartesianCoordinate.class.getName());
 
 		assertArgumentFiniteDouble(xPosition);
@@ -59,6 +63,27 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		assert (this.yPosition == yPosition);
 		assert (this.zPosition == zPosition);
 		assertClassInvariants();
+	}
+
+	/**
+	 * Create an Instance of Cartesian Coordinte.
+	 * @param xPosition position on the x-axis of the coordinate space
+	 * @param yPosition position on the y-axis of the coordinate space
+	 * @param zPosition position on the z-axis of the coordinate space
+	 * @return Cartesian coordinate with specified Values
+	 */
+	public static CartesianCoordinate createCartesianCoordinate(double xPosition, double yPosition, double zPosition){
+
+		String key = xPosition + " " + yPosition + " " + zPosition;
+		CartesianCoordinate result = (CartesianCoordinate) cartesianCoordinates.get(key);
+
+		if(result == null){
+			result = new CartesianCoordinate(xPosition, yPosition, zPosition);
+			cartesianCoordinates.put(key, result);
+		}
+
+		return result;
+
 	}
 
 	/**
@@ -124,14 +149,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
 		SphericCoordinate result;
 		try{
-			result = new SphericCoordinate(radius,polarAngle,azimuthalAngle);
+			result = SphericCoordinate.createSphericCoordinate(radius, polarAngle, azimuthalAngle);
 		} catch (IllegalArgumentException e){
 			ConversionFailedException ex = new ConversionFailedException(SPHERIC_CONVERSION_FAILED , e);
 			log.warning(LogBuilder.createSystemMessage().
 					addException(LOG_SPHERIC_CONVERSION_FAILED, ex).toString());
 			throw ex;
 		}
-		return new SphericCoordinate(radius, polarAngle, azimuthalAngle);
+		return result;
 	}
 
 	@Override
