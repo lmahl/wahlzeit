@@ -12,12 +12,17 @@ package org.wahlzeit.model;
 
 import com.googlecode.objectify.annotation.Entity;
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.util.logging.Logger;
 
 /**
  * Class that represents a Wahlzeit Photo containing a Sticker
  */
+@PatternInstance(
+		name = "Abstract Factory",
+		participants = { "Abstract Product, Concrete Product" }
+)
 @Entity
 public class StickerPhoto extends Photo{
 

@@ -12,9 +12,18 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.model.exceptions.FailedToCreateInstanceException;
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.util.logging.Logger;
 
+@PatternInstance(
+		name = "Singleton",
+		participants = { "Singleton" }
+)
+@PatternInstance(
+		name = "Abstract Factory",
+		participants = { "Abstract Factory, Concrete Factory" }
+)
 public class StickerPhotoFactory extends PhotoFactory {
 
 	private static StickerPhotoFactory stickerPhotoFactory = null;
