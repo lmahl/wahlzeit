@@ -47,7 +47,7 @@ public class StickerPhotoFactoryTest {
 	@Test
 	public void testCreateSticker() throws FailedToCreateInstanceException {
 		StickerPhotoFactory factory = StickerPhotoFactory.getInstance();
-		Sticker st = new Sticker(1, 2, "foo", StickerGroup.MUSIC);
+		Sticker st = StickerManager.getInstance().createSticker(1, 2, "foo", StickerGroup.MUSIC);
 		StickerPhoto createdPhoto = new StickerPhoto(st,PhotoId.getRandomId());
 		StickerPhoto factoryPhoto = factory.createStickerPhoto(PhotoId.getRandomId(),st);
 

@@ -27,6 +27,7 @@ public class StickerPhotoTest {
 	private StickerPhoto s4;
 	private Sticker st;
 	private Sticker st_a;
+	private StickerManager sm;
 
 	private final LocalServiceTestHelper helper =
 			new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -35,8 +36,9 @@ public class StickerPhotoTest {
 	@Before
 	public void setUp(){
 		helper.setUp();
-		st = new Sticker(1, 2,"", StickerGroup.MUSIC);
-		st_a = new Sticker(2, 4,"foo", StickerGroup.SPORTS);
+		sm = StickerManager.getInstance();
+		st = sm.createSticker(1, 2,"", StickerGroup.MUSIC);
+		st_a = sm.createSticker(2, 4,"foo", StickerGroup.SPORTS);
 		s1 = new StickerPhoto();
 		s2 = new StickerPhoto(st);
 		s3 = new StickerPhoto(PhotoId.getRandomId());
