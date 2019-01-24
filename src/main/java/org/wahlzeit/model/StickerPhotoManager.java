@@ -21,4 +21,22 @@ public class StickerPhotoManager extends PhotoManager {
 		photoTagCollector = StickerPhotoFactory.getInstance().createPhotoTagCollector();
 	}
 
+	@Override
+	public Photo getPhotoFromId(PhotoId id) {
+		if (id == null) {
+			return null;
+		}
+
+		Photo result = doGetPhotoFromId(id);
+
+		if (result == null) {
+			result = StickerPhotoFactory.getInstance().loadPhoto(id);
+			if (result != null) {
+				doAddPhoto(result);
+			}
+		}
+
+		return result;
+	}
+
 }
