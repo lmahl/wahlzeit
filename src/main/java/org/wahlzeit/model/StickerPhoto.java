@@ -18,6 +18,23 @@ import java.util.logging.Logger;
 
 /**
  * Class that represents a Wahlzeit Photo containing a Sticker
+ *
+ * Sequence of method calls that lead to the creation of a StickerPhoto object
+ * 1. A StickerPhotoManager object is instantiated by  client and it's createPhoto method is called. E.g. from UploadPhotoFormHandler
+ * 2. In StickerPhotoManager's createPhoto method, PhotoUtil.createPhoto method is called
+ * 3. In PhotoUtil.createPhoto, StickerPhotoFactory's createPhoto method is called
+ * 4. In this createPhoto method, a new StickerPhoto instance is created via the StickerPhoto Constructor
+ * 5. The StickerPhoto object is returned to the PhotoUtil.createPhoto method
+ * 6. The StickerPhoto object is returned to StickerPhotoManager.createPhoto method
+ * 7. The StickerPhoto object is passed to the client
+ *
+ * Object Creation Six Tuple
+ * 1. Delegation: separate-object -> A StickerPhotoFactory object is responsible for creating a StickerPhoto object
+ * 2. Selection: by-subclassing -> Which concrete object is created is decided by subclassing PhotoFactory.
+ * 3. Configuration: in-code -> currently, the mappping is hard-coded. The only concrete subclasses, that are ever used are the Sticker-specific ones
+ * 4. Instantiation: in-code -> StickerPhoto is instantiated by a call to its constructor
+ * 5. Initialization: by-key-value-pair -> SitckerPhoto has multiple constructors with differing variable lists
+ * 6. Building: default -> the StickerPhoto is creating the structure by itself
  */
 @PatternInstance(
 		name = "Abstract Factory",
