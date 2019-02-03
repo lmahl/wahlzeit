@@ -14,6 +14,10 @@ import org.wahlzeit.utils.PatternInstance;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Collaboration Name: Manager
+ * Collaboration Role: Manager
+ */
 @PatternInstance(
 		name = "Singleton",
 		participants = {"Singleton"}
@@ -44,6 +48,7 @@ public class StickerManager {
 	}
 
 	/**
+	 * @collaboration Collaboration method for manager collaboration
 	 * @Methodtype get
 	 * @return List of all stickers ever created by the manager
 	 */
@@ -53,6 +58,7 @@ public class StickerManager {
 
 	/**
 	 * Create a new Sticker with a corresponding StickerType
+	 * @collaboration Collaboration method for manager collaboration
 	 * @param width width of the StickerType
 	 * @param height height of the StickerType
 	 * @param text text of the StickerType
@@ -68,6 +74,7 @@ public class StickerManager {
 
 	/**
 	 * Create a new Sticker with a corresponding StickerType
+	 * @collaboration Collaboration method for manager collaboration
 	 * @param width width of the StickerType
 	 * @param height height of the StickerType
 	 * @param text text of the StickerType

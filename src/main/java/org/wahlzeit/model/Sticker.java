@@ -28,6 +28,23 @@ import org.wahlzeit.utils.PatternInstance;
  * 5. Initialization: by-key-value-pair -> Sitcker has two constructors with differing variable lists
  * 6. Building: default -> the Sticker is creating the structure by itself
  */
+
+/**
+ * Collaboration Name: Type Object
+ * Collaboration Role: Instance
+ */
+
+/**
+ * Collaboration Name: Client-Service
+ * Collaboration Role: Service
+ */
+
+/**
+ * Collaboration Name: Manager
+ * Collaboration Role: Element
+ * This Collaborator does not provide methods for collaboration
+ */
+
 @PatternInstance(
 		name = "Type Object Pattern",
 		participants = {"Object"}
@@ -47,8 +64,9 @@ public class Sticker {
 	}
 
 	/**
-	 *
-	 * @Methodtype set
+	 * @collaboration Collaboration method for Type Object collaboration
+	 * @collaboration Collaboration method for client-service collaboration
+	 * @Methodtype get
 	 */
 	public StickerType getType(){
 		return this.type;

@@ -16,6 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+
+/**
+ * Collaboration Name: Type Object
+ * Collaboration Role: Type
+ */
 @PatternInstance(
 		name = "Type Object Pattern",
 		participants = {"Object Type"}
@@ -75,6 +80,7 @@ public class StickerType {
 	}
 
 	/**
+	 * @collaboration Collaboration method for Type Object collaboration
 	 * @Methodtype Factory
 	 * Creates an instance of a Sticker with this Type as its Type in Type Object Pattern
 	 * @return instance of Sticker
@@ -84,6 +90,7 @@ public class StickerType {
 	}
 
 	/**
+	 * @collaboration Collaboration method for Type Object collaboration
 	 * @Methodtype Factory
 	 * Creates an instance of a Sticker with this Type as its Type in Type Object Pattern
 	 * @param location Location the sticker is found
@@ -194,6 +201,9 @@ public class StickerType {
 		return (Math.abs(a - b) < EPSILON);
 	}
 
+	/**
+	 * @collaboration Collaboration method for Type Object collaboration
+	 */
 	public boolean isSubtype(StickerType other){
 		if(other == null){
 			return false;
@@ -212,6 +222,7 @@ public class StickerType {
 
 	/**
 	 * Set the Parent type of this type in the type hierarchy
+	 * @collaboration Collaboration method for Type Object collaboration
 	 * @Methodtype set
 	 */
 	public void setParent(StickerType parentType){
@@ -220,6 +231,7 @@ public class StickerType {
 
 	/**
 	 * @Methodtype get
+	 * @collaboration Collaboration method for Type Object collaboration
 	 */
 	public StickerType getParent(){
 		return this.parent;

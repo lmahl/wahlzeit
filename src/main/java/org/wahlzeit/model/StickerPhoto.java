@@ -36,6 +36,12 @@ import java.util.logging.Logger;
  * 5. Initialization: by-key-value-pair -> SitckerPhoto has multiple constructors with differing variable lists
  * 6. Building: default -> the StickerPhoto is creating the structure by itself
  */
+
+/**
+ * Collaboration Name: Client-Service
+ * Collaboration Role: Client
+ * This Collaborator does not provide methods for collaboration
+ */
 @PatternInstance(
 		name = "Abstract Factory",
 		participants = { "Abstract Product, Concrete Product" }
